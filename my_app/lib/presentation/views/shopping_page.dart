@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/data/repository/local_storage_repository_impl.dart';
 import 'package:my_app/data/repository/product_repository_impl.dart';
-import 'package:my_app/presentation/controller/login_controller.dart';
 import 'package:my_app/presentation/controller/shopping_controller.dart';
-import 'package:my_app/presentation/views/cart_page.dart';
 import 'package:my_app/routes/app_routes.dart';
 
 class ShoppingPage extends GetWidget<ShoppingController> {
@@ -12,11 +10,6 @@ class ShoppingPage extends GetWidget<ShoppingController> {
 
   final ShoppingController shoppingController =
       ShoppingController(Get.put(ProductRepositoryImpl()));
-
-  void addCart(int index) {
-    controller.addCart(index);
-    Get.snackbar('Infor', 'Add product success!');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +55,7 @@ class ShoppingPage extends GetWidget<ShoppingController> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                addCart(index);
+                                controller.addCart(index);
                               },
                               child: const Text('Add to Cart'))
                         ],

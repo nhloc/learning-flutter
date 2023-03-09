@@ -5,14 +5,10 @@ import 'package:my_app/presentation/controller/cart_controller.dart';
 class CartPage extends GetWidget<CartController> {
   CartPage({super.key});
 
-  void delete(int index) {
-    controller.deleteCart(index);
-    Get.snackbar('Infor', 'Delete success!');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightGreen,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -48,7 +44,7 @@ class CartPage extends GetWidget<CartController> {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  delete(index);
+                                  controller.deleteCart(index);
                                 },
                                 child: const Text('Delete'))
                           ],
