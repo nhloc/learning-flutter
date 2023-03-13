@@ -16,16 +16,33 @@ class ShoppingPage extends GetWidget<ShoppingController> {
     var data = Get.arguments;
     return Scaffold(
       appBar: AppBar(title: const Text('Shopping Page')),
-      backgroundColor: Color.fromARGB(255, 122, 189, 180),
+      backgroundColor: const Color.fromARGB(255, 160, 219, 211),
       body: SafeArea(
           child: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Hello: $data', style: const TextStyle(fontSize: 20))
+                  Text('Hello: $data', style: const TextStyle(fontSize: 20)),
+                  TextButton.icon(
+                      onPressed: () async {
+                        final result =
+                            await Get.toNamed(AppRoutes.cart, arguments: data);
+                        if (result != null) {
+                          controller.getAllProduct();
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.shopping_cart,
+                        size: 32,
+                        color: Color.fromARGB(255, 1, 15, 97),
+                      ),
+                      label: Obx(() => Text('(${controller.itemCount})',
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 1, 15, 97)))))
                 ],
               )),
           Expanded(
@@ -64,35 +81,47 @@ class ShoppingPage extends GetWidget<ShoppingController> {
                   );
                 })),
           ),
-          const SizedBox(height: 20),
-          Obx(() => Text('Total amount: ${controller.itemCount}',
-              style: const TextStyle(fontSize: 20))),
-          const SizedBox(height: 20),
-          Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        LocalRepositoryImpl().clearSession();
-                        Get.offNamed(AppRoutes.login);
-                      },
-                      child: const Text('Logout')),
-                  ElevatedButton(
-                      onPressed: () async {
-                        final result =
-                            await Get.toNamed(AppRoutes.cart, arguments: data);
-                        if (result != null) {
-                          controller.getAllProduct();
-                        }
-                      },
-                      child: const Text('View Cart'))
-                ],
-              )),
-          const SizedBox(height: 20),
+          const SizedBox(height: 20)
         ],
       )),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Information',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.shopping_cart),
+              title: Obx(() => Text('Shopping Cart (${controller.itemCount})')),
+              onTap: () async {
+                final result =
+                    await Get.toNamed(AppRoutes.cart, arguments: data);
+                if (result != null) {
+                  controller.getAllProduct();
+                }
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Log out'),
+              onTap: () {
+                LocalRepositoryImpl().clearSession();
+                Get.offNamed(AppRoutes.login);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

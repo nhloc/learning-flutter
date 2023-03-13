@@ -8,18 +8,32 @@ class CartPage extends GetWidget<CartController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreen,
+      appBar: AppBar(title: const Text('Shopping Cart'), automaticallyImplyLeading: false),
+      backgroundColor: const Color.fromARGB(255, 118, 147, 240),
+      
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Padding(padding: EdgeInsets.only(top: 100)),
-          Text('View Cart ${Get.arguments}'),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextButton.icon(
+                      onPressed: () {
+                        Get.back(result: 'return');
+                      },
+                      icon: const Icon(Icons.home, size: 32, color: Color.fromARGB(255, 1, 3, 107),),
+                      label: const Text(''))
+                ],
+              )),
           Expanded(
               child: Obx(() => ListView.builder(
                   itemCount: controller.products.value.length,
                   itemBuilder: (context, index) {
                     return Card(
-                      margin: const EdgeInsets.all(15),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Column(
@@ -52,20 +66,7 @@ class CartPage extends GetWidget<CartController> {
                       ),
                     );
                   }))),
-          SizedBox(height: 10),
-          Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Get.back(result: 'return');
-                      },
-                      child: const Text('Return'))
-                ],
-              )),
-          SizedBox(height: 10)
+          const SizedBox(height: 10),
         ],
       ),
     );
